@@ -1,0 +1,24 @@
+{
+  "name": "egamsg",
+  "version": "1.0.0",
+  "description": "Messagerie instantané avec node",
+  "main": "src/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://egamorf76@github.com/egamorf76/egamsg.git"
+  },
+  "author": "Egamorf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/egamorf76/egamsg/issues"
+  },
+  "homepage": "https://github.com/egamorf76/egamsg#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "jquery": "^3.6.0"
+  }
+}
