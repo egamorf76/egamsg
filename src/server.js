@@ -1,38 +1,46 @@
 const express = require("express");
 const WebSocket = require("ws");
+const path = require('path');
+const { stringify } = require("querystring");
 
 const wss = new WebSocket.Server({ noServer: true });
 const app = express();
 const port = process.env.PORT || 3000;
-const staticPath = path.join(__dirname, "../public");
 
-wss.on('open', function (ws) {
-    ws.send('Hello world');
+wss.on('connection', function (ws, req, client) {
+
+    ws.send(JSON.stringify({
+        author: { id: 0, name: "server"},
+        time: new Date().toJSON(),
+        message: "Hello world",
+    }));
+
+    ws.on('message', function (data, isBinary) {
+
+        var msg = JSON.parse(data);
+        console.dir(msg);
+
+        wss.clients.forEach(function (client) {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(data, { binary: isBinary });
+            }
+        });
+    })
 })
 
-wss.on('message', function (data) {
-    console.log(`Received: ${data}`)
-})
-
-app.use(express.static(staticPath))
+app.use(express.static(path.join(__dirname, "../public")));
+app.use('/jq', express.static(path.join(__dirname, "../node_modules/jquery/dist")));
 
 app.get("/", function (req, res) {
-    res.send("test");
+    res.sendFile(path.join(__dirname, "/views" ,"/index.html"));
 })
 
 const server = app.listen(port, function () {
-    console.log(`Server run on port ${port}`)
+    console.log(`Server run at: http://localhost:${port}`);
 })
 
 server.on('upgrade', function (req, socket, head) {
-    const {pathname} = parse(req.url);
-
-    if (pathname === '/wss') {
-        wss.handleUpgrade(req, socket, head, function (ws) {
-            wss.emit('connection', ws, req);
-        });
-    } else {
-        socket.destroy();
-    }
+    wss.handleUpgrade(req, socket, head, socket => {
+        wss.emit('connection', socket, req);
+    });
 })
-

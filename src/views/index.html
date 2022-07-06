@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8" >
+    <title>Sample Site</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+<div class="container">
+    <div class="navbar">
+        <div class="navbar-head">
+            <span>EGAMESSAGE</span>
+        </div>
+    </div>
+
+    <div class="content">
+    </div>
+    <div class="footer">
+        <form id="message-form">
+            <input class="text-box" type="text">
+            <input class="send" type="submit">
+        </form>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="../jq/jquery.min.js"></script>
+<script>
+    const ws = new WebSocket("ws://localhost:3000")
+    var lastValue;
+
+    ws.addEventListener('message', function (evt) {
+        msg = JSON.parse(evt.data)
+        console.dir(msg);
+        if (!valueIsEqual(msg, lastValue)) {
+            $('.content').append(getHtmlMessage("message received", msg));
+        }
+    })
+
+    $('#message-form').submit(function (e) {
+        e.preventDefault();
+
+        var value =  {
+            author: { id: 1, name: "Egamorf"},
+            time: new Date().toJSON(),
+            message: $('.text-box').val()
+        }
+        lastValue = value;
+
+        $('.content').append(getHtmlMessage("message sent", value));
+        $('.text-box').val("");
+
+        ws.send(JSON.stringify(value));
+    })
+
+    function getHtmlMessage(htmlClass, value) {
+        return `<div class="${htmlClass}">${value.author.name}: ${value.message} ${new Date(value.time).getHours()}:${new Date(value.time).getMinutes()}</div>`
+    }
+
+    function valueIsEqual(newValue, oldValue) {
+        if (newValue == null || oldValue == null) {
+            return false;
+        }
+
+        return newValue.author.id === oldValue.author.id &&
+            newValue.author.name === oldValue.author.name &&
+            newValue.time === oldValue.time &&
+            newValue.message === oldValue.message;
+    }
+
+</script>
+
+</html>
