@@ -28,7 +28,7 @@
 
 <script type="text/javascript" src="../jq/jquery.min.js"></script>
 <script>
-    const ws = new WebSocket("ws://localhost:3000")
+    const ws = new WebSocket(`wss://${window.location.host}/`)
     var lastValue;
 
     ws.addEventListener('message', function (evt) {
