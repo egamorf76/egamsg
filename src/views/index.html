@@ -34,9 +34,7 @@
     ws.addEventListener('message', function (evt) {
         msg = JSON.parse(evt.data)
         console.dir(msg);
-        if (!valueIsEqual(msg, lastValue)) {
-            $('.content').append(getHtmlMessage("message received", msg));
-        }
+        $('.content').append(getHtmlMessage(`message ${valueIsEqual(msg, lastValue) ? "sent" : "received"}`, msg));
     })
 
     $('#message-form').submit(function (e) {
@@ -48,8 +46,6 @@
             message: $('.text-box').val()
         }
         lastValue = value;
-
-        $('.content').append(getHtmlMessage("message sent", value));
         $('.text-box').val("");
 
         ws.send(JSON.stringify(value));
