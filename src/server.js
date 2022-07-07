@@ -10,9 +10,9 @@ const port = process.env.PORT || 3000;
 wss.on('connection', function (ws, req, client) {
 
     ws.send(JSON.stringify({
-        author: { id: 0, name: "server"},
+        author: { id: 0, name: "Serveur"},
         time: new Date().toJSON(),
-        message: "Hello world",
+        message: "Bienvenue",
     }));
 
     ws.on('message', function (data, isBinary) {
