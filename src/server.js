@@ -6,8 +6,10 @@ const cookieparser = require("cookie-parser");
 const { stringify } = require("querystring");
 require("./db/conn");
 
+const auth = require("./middleware/auth");
 const messagectrl = require("./controllers/messagectrl")
 const authctrl = require("./controllers/authctrl")
+const userctrl = require("./controllers/userctrl")
 
 const wss = new WebSocket.Server({ noServer: true });
 const app = express();
@@ -27,6 +29,8 @@ app.get("/", function (req, res) {
 
 app.post("/api/auth/signup", authctrl.signup);
 app.post("/api/auth/signin", authctrl.signin);
+
+app.get("/api/profils/:id", auth, userctrl.getuser);
 
 const server = app.listen(port, function () {
     console.log(`Server run at: http://localhost:${port}`);

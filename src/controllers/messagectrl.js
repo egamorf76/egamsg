@@ -9,7 +9,7 @@ exports.connectWs = function (ws, req, client) {
     ws.on('message', function (data, isBinary) {
 
         var msg = JSON.parse(data);
-        console.dir(msg);
+        console.log(msg);
 
         wss.clients.forEach(function (client) {
             if (client.readyState === WebSocket.OPEN) {

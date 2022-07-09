@@ -50,7 +50,6 @@ exports.signin = function (req, res) {
         }
 
         user.lastconn = new Date().toISOString();
-        console.log(user);
         user.save(function (err,doc) {
             if (err) {
                 console.log(err);
@@ -58,9 +57,11 @@ exports.signin = function (req, res) {
             }
         });
         
-        var token = jwt.sign(user._id.toHexString(), config.SECRET);
-        res.status(200).cookie("Authorization", token, { expires: new Date(Date.now() + 24 * 3600000), secure: true }).json({
-            userId: user._id.toHexString()
+        var token = jwt.sign({ userid: user._id.toHexString() }, config.SECRET, { expiresIn: config.EXPIRE * 60 });
+
+        res.status(200).json({
+            userid: user._id.toHexString(),
+            token: token
         });
     });
 }
