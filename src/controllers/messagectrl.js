@@ -1,7 +1,7 @@
 exports.connectWs = function (ws, req, client) {
 
     ws.send(JSON.stringify({
-        author: { id: 0, name: "Serveur"},
+        author: 0,
         time: new Date().toJSON(),
         message: "Bienvenue",
     }));
