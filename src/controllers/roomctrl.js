@@ -58,15 +58,9 @@ exports.createroom = function(req, res, next) {
             }
             res.status(200).json(doc2);
 
-            var room = {
-                name: doc2.name,
-                users: doc2.users,
-                messages: doc2.messages,
-                pinmessages: doc2.pinmessages,
-                wss: new WebSocket.Server({ noServer: true })
-            }
-            rooms.push(room)
-            messagectrl.onconnectionws(room)
+            doc2.wss = new WebSocket.Server({ noServer: true });
+            rooms.push(doc2);
+            messagectrl.onconnectionws(doc2);
         });
     })
 }
