@@ -9,9 +9,9 @@ const roomSchema = new mongoose.Schema({
         unique: [true, "Name already exist"],
         require: [true, "Name must be completed"]
     },
-    users: [User],
-    messages: [Message],
-    pinmessages: [Message]
+    users: [User.schema],
+    messages: [Message.schema],
+    pinmessages: [Message.schema]
 });
 
 const Room = mongoose.model("room", roomSchema);

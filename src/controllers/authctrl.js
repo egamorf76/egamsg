@@ -45,7 +45,7 @@ exports.signin = function (req, res) {
         var valid = bcrypt.compareSync(req.body.password, user.password);
         
         if (!valid) {
-            res.status(401).json({ message: "Password incorrect" });
+            res.status(401).json({ messa0ge: "Password incorrect" });
             return;
         }
 

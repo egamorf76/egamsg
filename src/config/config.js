@@ -7,7 +7,7 @@ const config={
     default : {
         SECRET: 'S€cr3tT0kenEg4m0&D1eu$',
         DATABASE: 'mongodb://localhost:27017/egamsgdb',
-        EXPIRE: 10
+        EXPIRE: 45
     }
 }
 

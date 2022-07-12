@@ -24,7 +24,7 @@ const messageSchema = new mongoose.Schema({
         }
     },
     user: {
-        type: User,
+        type: User.schema,
         require: true
     }
 });

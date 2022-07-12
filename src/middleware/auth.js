@@ -2,6 +2,7 @@ const config = require("../config/config").get(process.env.NODE_ENV);
 const jwt = require("jsonwebtoken");
 
 module.exports = function(req, res, next) {
+    try {
         const token = req.headers.authorization.split(' ')[1];
         jwt.verify(token, config.SECRET, function (err, decoded) {
             if (err) {
@@ -11,4 +12,7 @@ module.exports = function(req, res, next) {
             req.auth = { userid: decoded.userid };
             next();
         });
+    } catch(err) {
+        console.log(err);
+    }
 };
