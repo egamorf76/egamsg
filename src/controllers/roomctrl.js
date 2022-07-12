@@ -15,8 +15,9 @@ Room.find({}, function (err, docs) {
         return;
     }
     for (const doc of docs) {
-        doc.wss = new WebSocket.Server({ noServer: true })
-        rooms.push(doc);
+        var room = createroomsws(doc)
+        rooms.push(room);
+        messagectrl.onconnectionws(room)
     }
 })
 
@@ -25,6 +26,18 @@ function getrooms() {
     return rooms;
 }
 exports.getrooms = getrooms;
+
+// Reformat of room
+function createroomsws(room) {
+    return {
+        _id: room._id,
+        name: room.name,
+        users: room.users,
+        messages: room.messages,
+        pinmessages: room.pinmessages,
+        wss: new WebSocket.Server({ noServer: true })
+    };
+}
 
 // Create a room
 exports.createroom = function(req, res, next) {
@@ -58,9 +71,9 @@ exports.createroom = function(req, res, next) {
             }
             res.status(200).json(doc2);
 
-            doc2.wss = new WebSocket.Server({ noServer: true });
-            rooms.push(doc2);
-            messagectrl.onconnectionws(doc2);
+            var room = createroomsws(doc)
+            rooms.push(room);
+            messagectrl.onconnectionws(room);
         });
     })
 }

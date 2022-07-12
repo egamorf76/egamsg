@@ -5,10 +5,10 @@ const bodyparser = require("body-parser");
 require("./db/conn");
 
 const auth = require("./middleware/auth");
-const messagectrl = require("./controllers/messagectrl")
 const authctrl = require("./controllers/authctrl")
 const userctrl = require("./controllers/userctrl")
 const roomctrl = require("./controllers/roomctrl")
+const messagectrl = require("./controllers/messagectrl")
 
 // Global variable
 const app = express();
